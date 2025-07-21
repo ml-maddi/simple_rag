@@ -1,0 +1,10 @@
+streamlit
+langchain
+langchain_community
+google-generativeai
+langchain-google-genai
+sentence-transformers
+chromadb
+pymupdf
+fastapi
+uvicorn
