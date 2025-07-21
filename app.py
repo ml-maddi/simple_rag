@@ -1,3 +1,10 @@
+try:
+    __import__('pysqlite3')
+    import sys
+    sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+except ImportError:
+    pass # Fails gracefully if pysqlite3-binary is not installed
+
 import streamlit as st
 import os
 from langchain_google_genai import ChatGoogleGenerativeAI
@@ -34,10 +41,11 @@ LLM_MODEL_NAME = "gemini-2.5-flash"
 # --- PROMPT TEMPLATE FOR LANGUAGE CONSISTENCY ---
 prompt_template = """You are a helpful AI assistant for answering questions about a given document.
 You are given a question and a set of document chunks as context.
-You must strictly follow these rules:
-1. Your final answer MUST be in the same language as the user's question.
-2. If the user's question is in English, your answer must be in English.
-3. If the user's question is in Bengali, your answer must be in Bengali.
+You must STRICTLY FOLLOW these rules:
+1. YOUR FINAL ANSWER MUST BE IN THE SAME LANGUAGE AS THE USER'S QUESTION.
+2. IF THE USER'S QUESTION IS IN ENGLISH, YOUR ANSWER MUST BE IN ENGLISH.
+3. IF THE USER'S QUESTION IS IN BENGALI, YOUR ANSWER MUST BE IN BENGALI.
+
 4. Carefully analyze the provided context. If the information to answer the question is not in the context, you MUST respond with one of the following sentences, matching the language of the question:
    - For English questions: "Sorry, I am unable to answer this question."
    - For Bengali questions: "দুঃখিত, আপনার প্রশ্নটির উত্তর আমার জানা নেই।"
